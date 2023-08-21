@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sonit\\OneDrive\\Desktop\\UIOWA\\ConsoleApp\\ConsoleApp.csproj": {}
+    "C:\\Users\\sonit\\OneDrive\\Desktop\\FBIS\\ConsoleApp\\ConsoleApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sonit\\OneDrive\\Desktop\\UIOWA\\ConsoleApp\\ConsoleApp.csproj": {
+    "C:\\Users\\sonit\\OneDrive\\Desktop\\FBIS\\ConsoleApp\\ConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sonit\\OneDrive\\Desktop\\UIOWA\\ConsoleApp\\ConsoleApp.csproj",
+        "projectUniqueName": "C:\\Users\\sonit\\OneDrive\\Desktop\\FBIS\\ConsoleApp\\ConsoleApp.csproj",
         "projectName": "ConsoleApp",
-        "projectPath": "C:\\Users\\sonit\\OneDrive\\Desktop\\UIOWA\\ConsoleApp\\ConsoleApp.csproj",
+        "projectPath": "C:\\Users\\sonit\\OneDrive\\Desktop\\FBIS\\ConsoleApp\\ConsoleApp.csproj",
         "packagesPath": "C:\\Users\\sonit\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sonit\\OneDrive\\Desktop\\UIOWA\\ConsoleApp\\obj\\",
+        "outputPath": "C:\\Users\\sonit\\OneDrive\\Desktop\\FBIS\\ConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sonit\\AppData\\Roaming\\NuGet\\NuGet.Config"

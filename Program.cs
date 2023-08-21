@@ -10,103 +10,160 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            LetterService letter = new LetterService();
             // get all .txt files in input folder
-            string[] filePaths = Directory.GetFiles(@"C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters1\Input\", "*.txt",
+            string[] filePaths = Directory.GetFiles(@"C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters01\Input\", "*.txt",
                                          SearchOption.AllDirectories);
 
-            string[] numID = new string[filePaths.Length];
-            Console.WriteLine("Number files: " + numID.Length);
-
-            // Move all files to achive folder
-            var archiveFolder = new ArrayList();
-            archiveFolder.AddRange(numID);
-
-
-            // get all student ids
-            for (int i = 0; i < filePaths.Length; i++)
+            // 1- Move file in Input folder to Achive Folder
+            foreach (var fileName in filePaths)
             {
-                numID[i] = filePaths[i].Substring(filePaths[i].Length - 12, 8);
-                // Console.WriteLine(numID[i]);
+                // Console.WriteLine(fileName);
+                File.Move(fileName, Path.Combine(@"C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters01\Archive\", Path.GetFileName(fileName)));
             }
 
-            Console.WriteLine("==============================");
+            string[] archiveFolder = Directory.GetFiles(@"C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters01\Archive\", "*.txt",
+                                         SearchOption.AllDirectories);
+
+            Console.WriteLine(archiveFolder.Length);
+            // store all student IDs
+            string[] numID = new string[archiveFolder.Length];
+
+            //store all file names
+            string[] fileNames = new string[archiveFolder.Length];
+
+            // //get all file names. eg. 00001010.txt
+            for (int i = 0; i < archiveFolder.Length; i++)
+            {
+                fileNames[i] = archiveFolder[i].Substring(archiveFolder[i].Length - 12, 12);
+                // Console.WriteLine(fileNames[i]);
+            }
+
+            // get all student ids. eg. 00001010
+            for (int i = 0; i < archiveFolder.Length; i++)
+            {
+                numID[i] = archiveFolder[i].Substring(archiveFolder[i].Length - 12, 8);
+                // Console.WriteLine(numID[i]);
+            }
 
             // sort student id in acending order
-            Array.Sort(numID);
+            Array.Sort(numID); // assume already sort when store in the folder
 
-            // use Array
-            string[] output = new string[numID.Length];
-            string[] archive = new string[numID.Length];
+            var outputFolder = new ArrayList();
+            var output = new ArrayList();
 
-            int indexA = 0;
-            int indexO = 0;
+            int index = 0;
 
             for (int i = 1; i < numID.Length; i++)
             {
-                //skip to next index if we see a duplicate element
-                if (numID[i - 1] != numID[i])
+                //if we see a duplicate element, increment the index
+                //move file to output folder
+                if (numID[i - 1] == numID[i])
                 {
-                    archive[indexA] = numID[i];
-                    indexA++;
-                }
-                else
-                {
-                    output[indexO] = numID[i];
-                    indexO++;
+                    // Console.WriteLine(numID[i]);
+                    outputFolder.Add(numID[i]);
+                    output.Add(archiveFolder[i - 1]);
+                    output.Add(archiveFolder[i]);
+
+                    string moveDir1 = @"C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters01\Output\";
+                    string moveDir2 = numID[i].ToString();
+                    string moveDir3 = ".txt";
+                    string movePath1 = moveDir1 + moveDir2;
+                    string movePathFinal = movePath1 + moveDir3;
+                    // Console.WriteLine("MOVE DIR:........................ " + movePathFinal);
+                    string dir = $@"{movePathFinal}";
+                    if (!Directory.Exists(dir))
+                    {
+                        Directory.CreateDirectory(dir);
+                    }
+
+                    // Console.WriteLine("HERE: ==============" + archiveFolder[i]);
+
+                    // Console.WriteLine("HERE: ==============" + archiveFolder.Length);
+
+                    // call CombineTwoLetter method to merger content of two letters
+                    letter.CombineTwoLetters(archiveFolder[i], archiveFolder[i - 1], dir);
+
+                    // remove inputfile 1 and input file to before combine from the archive folder
+                    // string filePath1 = archiveFolder[i];
+                    // string filePath2 = archiveFolder[i - 1];
+
+                    // // Delete the file
+                    // File.Delete(filePath1);
+                    // File.Delete(filePath2);
+
+                    // if (!File.Exists(filePath1))
+                    // {
+                    //     Console.WriteLine($"File {filePath1} is successfully deleted.");
+                    // }
+                    // if (!File.Exists(filePath2))
+                    // {
+                    //     Console.WriteLine($"File {filePath2} is successfully deleted.");
+                    // }
+
+                    index++;
                 }
             }
+            // Console.WriteLine(outputFolder.Count);
+            // Console.WriteLine("OUTPUT: " + output.Count);
+            // // Console.WriteLine("OUTPUT Name: " + output[0]);
+            // for (int i = 0; i < output.Count; i++)
+            // {
+            //     Console.WriteLine(output[i]);
+            // }
 
-            //useArrayList
-            var outputL = new ArrayList();
-            var archiveL = new ArrayList();
 
-            int indexArc = 0;
-            int indexOut = 0;
+            // LetterService letter = new LetterService();
+            // int n = output.Count;
+            // for (int i = 0; i < output.Count / 2; i++)
+            // {
+            //     string name = outputFolder[i];
+            //     string dir = "C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters4\Output" + ${ name};
+            //     letter.CombineTwoLetters(output[i], output[n / 2 + i], dir);
+            // }
 
-            for (int i = 1; i < numID.Length; i++)
+
+            // StreamWriter sw = new StreamWriter("C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters4\Output\report.txt");
+            // //Write a line of text
+            // sw.WriteLine("Hello World!!");
+            // //Write a second line of text
+            // sw.WriteLine("From the StreamWriter class");
+            // //Close the file
+            // sw.Close();
+
+            //Pass the filepath and filename to the StreamWriter ConstructorFile
+            // StreamWriter sw = new StreamWriter("C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters3\Output\report.txt");
+
+
+            string currentDate = DateTime.Now.ToString("dd MMMM yyyy");
+
+            string md1 = @"C:\Users\sonit\OneDrive\Desktop\UIOWA\ConsoleApp\CombinedLetters01\Output\";
+            string md2 = currentDate.ToString();
+
+            string md3 = ".txt";
+            string move1 = md1 + md2;
+            string movePath = move1 + md3;
+            string direct = $@"{movePath}";
+            if (!Directory.Exists(direct))
             {
-                // Console.WriteLine(numID[i]);
-                //skip to next index if we see a duplicate element
-                if (numID[i - 1] != numID[i])
-                {
-                    archiveL.Add(numID[i]);
-                    indexArc++;
-                }
-                else
-                {
-                    outputL.Add(numID[i]);
-                    indexOut++;
-                }
+                Directory.CreateDirectory(direct);
             }
 
-            // Console.WriteLine(archiveL.Count);
-            // Console.WriteLine(outputL.Count);
-
-            string currentDate = DateTime.Now.ToString("MM/dd/yyyy");
             Console.WriteLine(currentDate + " Report");
+            // sw.WriteLine(currentDate + " Report");
             Console.WriteLine("---------------------------------------");
-            Console.WriteLine("Number of Combined Letters:  " + outputL.Count);
+            Console.WriteLine("Number of Combined Letters:  " + outputFolder.Count);
+            // sw.WriteLine("Number of Combined Letters:  " + outputFolder.Count);
 
-            foreach (string i in outputL)
+            foreach (string i in outputFolder)
             {
                 Console.WriteLine(i);
+                // sw.WriteLine(i);
             }
-
+            // sw.Close();
+            // Console.ReadLine();
             Console.WriteLine("=========================================");
 
-
-            string a = filePaths[0];
-            string b = filePaths[1];
-            string c = filePaths[2];
-            LetterService letter = new LetterService();
-            letter.CombineTwoLetters(a, b, c);
-
-
-            // delete all .txt files in input folder
-            // foreach (string filePath in filePaths)
-            // {
-            //     File.Delete(filePath);
-            // }
 
         }
 
@@ -125,10 +182,9 @@ namespace ConsoleApp
         {
             public void CombineTwoLetters(string inputFile1, string inputFile2, string resultFile)
             {
-                Console.WriteLine("In progress");
-                Console.WriteLine(inputFile1);
-                Console.WriteLine(inputFile2);
-                Console.WriteLine(resultFile);
+                // Console.WriteLine("inputFile1: " + inputFile1);
+                // Console.WriteLine("inputFile2 : " + inputFile2);
+                // Console.WriteLine("resultFile: " + resultFile);
 
                 String line;
                 String line2;
